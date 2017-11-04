@@ -1,0 +1,9 @@
+node_modules/*
+dist/
+env/
+.idea
+release-builds/*
+app/dist/*
+app/dist
+.DS_Store
+*.iml
