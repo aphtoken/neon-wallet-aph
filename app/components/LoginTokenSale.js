@@ -49,7 +49,7 @@ let LoginPrivateKey = ({ dispatch, loggedIn, wif, history }) =>
         <button onClick={(e) => onWifChange(dispatch, history, wif)}>Login</button>
         <Link to="/"><button className="altButton">Home</button></Link>
       </div>
-      <div id="footer">Created by Ethan Fast and CoZ. Donations: Adr3XjZ5QDzVJrWvzmsTTchpLRRGSzgS5A</div>
+      <div id="footer"></div>
     </div>
   </div>;
 

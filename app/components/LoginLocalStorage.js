@@ -87,7 +87,7 @@ class LoginLocalStorage extends Component {
           <Link to="/"><button className="altButton">Home</button></Link>
         </div>
         {this.props.decrypting === true ? <div className="decrypting">Decrypting keys...</div> : <div></div>}
-        <div id="footer">Created by Ethan Fast and COZ. Donations: Adr3XjZ5QDzVJrWvzmsTTchpLRRGSzgS5A</div>
+        <div id="footer"></div>
       </div>
     </div>);
   }

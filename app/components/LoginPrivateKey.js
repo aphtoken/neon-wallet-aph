@@ -68,7 +68,7 @@ class LoginPrivateKey extends React.Component {
             <button onClick={this.handleVerify}>Login</button>
             <Link to="/"><button className="altButton">Home</button></Link>
           </div>
-          <div id="footer">Created by Ethan Fast and COZ. Donations: Adr3XjZ5QDzVJrWvzmsTTchpLRRGSzgS5A</div>
+          <div id="footer"></div>
         </div>
       </div>
     );

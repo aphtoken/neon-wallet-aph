@@ -50,7 +50,6 @@ describe('LoginNep2', () => {
     const keyField = wrapper.find('input[type="text"]');
     const footerField = wrapper.find('#footer');
 
-    expect(footerField.text()).toEqual('Created by Ethan Fast and COZ. Donations: Adr3XjZ5QDzVJrWvzmsTTchpLRRGSzgS5A');
     expect(passwordField.text()).toEqual('');
     expect(passwordField.html().includes('Enter your passphrase here')).toEqual(true);
     expect(keyField.text()).toEqual('');
