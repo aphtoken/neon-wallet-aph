@@ -1,5 +1,5 @@
 {
-  "name": "Neon",
+  "name": "Aphelion",
   "version": "0.0.7",
   "main": "./main.js",
   "description": "Light wallet for NEO blockchain",
@@ -18,7 +18,7 @@
   "keywords": [],
   "license": "ISC",
   "build": {
-    "appId": "com.electron.neon",
+    "appId": "com.electron.aphelion",
     "files": [
       "./main.js",
       "app/dist/index.html",

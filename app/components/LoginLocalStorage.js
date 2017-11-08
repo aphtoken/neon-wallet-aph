@@ -65,7 +65,7 @@ class LoginLocalStorage extends Component {
 
     return (<div id="loginPage">
       <div className="login">
-        <div className="logo"><img src={logo} width="60px"/></div>
+        <div className="logo"><img src={logo} width="216px" height="40px"/></div>
         <div className="loginForm">
           <input type={showKey ? 'text' : 'password'} placeholder="Enter your passphrase here" ref={(node) => passphrase_input = node}  />
 

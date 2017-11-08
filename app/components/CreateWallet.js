@@ -60,7 +60,7 @@ class CreateWallet extends Component {
         <Link to="/"><button className="altButton">Home</button></Link>
       </div>);
       return (<div id="newWallet">
-        <div className="logo"><img src={logo} width="60px"/></div>
+        <div className="logo"><img src={logo} width="216px" height="40px"/></div>
         {this.props.wif === null ? passphraseDiv : <div></div>}
         {this.props.generating === true ? <div className="generating">Generating keys...</div> : <div></div>}
         {this.props.generating === false && this.props.wif !== null ? <DisplayWalletKeys address={this.props.address} wif={this.props.wif} passphrase={this.props.passphrase} passphraseKey={this.props.encryptedWif} /> : <div></div>}

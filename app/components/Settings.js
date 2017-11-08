@@ -98,7 +98,7 @@ class Settings extends Component {
 
   render = () =>
     <div id="settings">
-      <div className="logo"><img src={logo} width="60px"/></div>
+      <div className="logo"><img src={logo} width="216px" height="40px"/></div>
       <div className="description">Manage your Neon wallet keys and settings</div>
       <div className="settingsForm">
         <div className="settingsItem">

@@ -35,7 +35,7 @@ class Dashboard extends Component {
     return (<div id="dashboard">
           <SplitPane className="navSplit" split="horizontal" size="40px" allowResize={false}>
             <div id="navBar">
-              <div id="title"><img src={logo} width="60px"/></div>
+              <div id="title"><img src={logo} width="130px" height="24px"/></div>
               <div id="version"><span className="grey">Version</span><span className="darker">{version}</span></div>
               <div id="height"><span className="grey">Block</span><span className="darker">{this.props.blockHeight}</span></div>
               <NetworkSwitch />
