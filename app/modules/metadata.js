@@ -5,7 +5,7 @@ export const SET_EXPLORER = 'SET_EXPLORER';
 
 // Actions
 export function setNetwork(net){
-  const network = net === "MainNet" ? "MainNet" : "TestNet";
+  const network = net === "MainNet" ? "MainNet" : net === "AphelionNet"? "AphelionNet" : "TestNet";
   return {
     type: SET_NETWORK,
     net: network
@@ -27,7 +27,7 @@ export function setBlockExplorer(blockExplorer){
 }
 
 // reducer for metadata associated with Neon
-export default (state = {blockHeight: 0, network: 'MainNet', blockExplorer: 'Neotracker'}, action) => {
+export default (state = {blockHeight: 0, network: 'AphelionNet', blockExplorer: 'Neotracker'}, action) => {
   switch (action.type) {
     case SET_HEIGHT:
       return {...state, blockHeight: action.blockHeight };

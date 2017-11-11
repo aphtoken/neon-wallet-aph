@@ -1,6 +1,7 @@
 const {app, shell, Menu, BrowserWindow} = require('electron');
 const path = require('path');
 const url = require('url');
+//const debugTools = require('electron-debug')({showDevTools: true});
 
 let mainWindow = null;
 
@@ -50,16 +51,7 @@ app.on('ready', () => {
 		    submenu: [
 		      {role: 'toggledevtools'}
 		    ]
-  	  },
-      {
-        role: 'help',
-        submenu: [
-          {label: 'City of Zion', click () { shell.openExternal('https://cityofzion.io/') }},
-          {label: 'GithHub', click () { shell.openExternal('https://github.com/CityOfZion') }},
-          {label: 'NEO Reddit', click () { shell.openExternal('https://www.reddit.com/r/NEO/') }},
-          {label: 'Slack', click () { shell.openExternal('https://neosmarteconomy.slack.com') }}
-        ]
-      }
+  	  }
     ];
 	  const menu = Menu.buildFromTemplate(template);
 		Menu.setApplicationMenu(menu);
