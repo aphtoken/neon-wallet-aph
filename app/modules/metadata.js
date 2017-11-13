@@ -5,7 +5,7 @@ export const SET_EXPLORER = 'SET_EXPLORER';
 
 // Actions
 export function setNetwork(net){
-  const network = net === "MainNet" ? "MainNet" : net === "AphelionNet"? "AphelionNet" : "TestNet";
+  const network = net === "MainNet" ? "MainNet" : net === "AphelionNet"? "AphelionNet" : net === "AphelionTestNet"? "AphelionTestNet" : "TestNet";
   return {
     type: SET_NETWORK,
     net: network
