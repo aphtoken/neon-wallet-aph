@@ -104,12 +104,14 @@ const resetBalanceSync = (dispatch, net, address) => {
 
 const toggleNet = (dispatch, net, address) => {
   let newNet;
-  if (net === "AphelionNet"){
-    newNet = "MainNet";
-  } else if (net === "MainNet"){
-      newNet = "TestNet";
+  if (net === "MainNet"){
+    newNet = "TestNet";
+  } else if (net === "TestNet"){
+      newNet = "AphelionMainNet";
+  } else if (net === "AphelionMainNet"){
+      newNet = "AphelionTestNet";
   } else {
-      newNet = "AphelionNet";
+      newNet = "MainNet";
   }
   dispatch(setNetwork(newNet));
   resetBalanceSync(dispatch, newNet, address);
