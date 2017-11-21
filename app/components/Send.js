@@ -81,7 +81,6 @@ const sendTransaction = (dispatch, net, selfAddress, wif, asset, neo_balance, ga
       if (response.result === undefined || response.result === false){
         dispatch(sendEvent(false, "Transaction failed!"));
       } else {
-        console.log(response.result);
         dispatch(sendEvent(true, "Transaction complete! Your balance will automatically update when the blockchain has processed it."));
       }
       setTimeout(() => dispatch(clearTransactionEvent()), 5000);

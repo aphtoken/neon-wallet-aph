@@ -22,7 +22,6 @@ const saveKeyRecovery = (keys) => {
       extensions: ['json']
     }]}, (fileName) => {
     if (fileName === undefined){
-        console.log("File failed to save...");
         return;
     }
     // fileName is a string that contains the path and filename created in the save file dialog.
@@ -39,7 +38,6 @@ const loadKeyRecovery = (dispatch) => {
   dialog.showOpenDialog((fileNames) => {
     // fileNames is an array that contains all the selected
     if(fileNames === undefined){
-        console.log("No file selected");
         return;
     }
     const filepath = fileNames[0];

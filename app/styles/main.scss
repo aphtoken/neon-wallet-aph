@@ -534,7 +534,7 @@ $box-margin: 10px;
 			border-top:3px solid $spacer-color;
 		}
 	}
-	ul#transactionList{
+	ul#transactionList, ul#assetList{
 		margin:0;
 		padding:0;
 		overflow-y: auto;
@@ -600,7 +600,62 @@ $box-margin: 10px;
 	border-right:1.5px solid $spacer-color;
 }
 
-// TODO: tool-tip seems broken
+//classes to add support for tabs
+.react-tabs__tab-list {
+	padding: 0;
+	display: flex;
+	margin: 0;
+}
+.react-tabs__tab {
+	display: inline-block;
+	position: relative;
+	list-style: none;
+	cursor: pointer;
+	font-weight: 200;
+	font-size: 1.2em;
+	flex: 1;
+	text-align: center;
+	padding: 16px 0px;
+
+	&:hover{
+		background: $secondary-background;
+	}
+}
+.react-tabs__tab--selected {
+	border-bottom: 2px solid $default-button;
+}
+.assetsContainer{
+	margin: 20px 20px;
+	.controls{
+		display: flex;
+		margin-bottom: 10px;
+		input{
+			flex: 4;
+			margin-right: 2px;
+		}
+		button{
+			flex: 1;
+		}
+	}
+	ul#assetList{
+		.assetListItem{
+			font-family: 'helvetica neue', 'helvetica', sans-serif;
+			font-size: .65em;
+			letter-spacing: .07em;
+			.amountBig{
+				font-weight:200;
+				font-size:2.4em;
+				color:$default-button;;
+				margin:0px 0px 2px 0px;
+			}
+			.symbol, .balance{
+				width: 50%;
+			}
+		}
+	}
+}
+
+	// TODO: tool-tip seems broken
 .__react_component_tooltip {
 	&.show {
 		opacity: 1 !important;

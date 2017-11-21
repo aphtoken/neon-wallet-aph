@@ -9,14 +9,14 @@ import { clipboard } from 'electron';
 const getExplorerLink = (net, explorer, txid) => {
   let base;
   if (explorer === "Neotracker"){
-    if (net === "MainNet"){
+    if (net === "MainNet" || net === "AphelionMainNet"){
       base = "https://neotracker.io/tx/";
     } else {
       base = "https://testnet.neotracker.io/tx/";
     }
   }
   else {
-    if (net === "MainNet"){
+    if (net === "MainNet"  || net === "AphelionMainNet"){
       base = "http://antcha.in/tx/hash/";
     } else {
       base = "http://testnet.antcha.in/tx/hash/";
@@ -38,8 +38,6 @@ class TransactionHistory extends Component {
 
   render = () =>
     <div id="transactionInfo">
-      <div className="columnHeader">Transaction History</div>
-      <div className="headerSpacer"></div>
       <ul id="transactionList">
         {this.props.transactions.map((t) => {
           const formatGas = (gas) => Math.floor(parseFloat(gas) * 10000) / 10000;

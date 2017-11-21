@@ -73,7 +73,6 @@ const participateInSale = (dispatch, net, wif, totalNeo) => {
       })
   }).catch((e) => {
     dispatch(sendEvent(false, "This script hash cannot mint tokens."));
-    console.log(e)
     setTimeout(() => dispatch(clearTransactionEvent()), 5000);
     return false;
   });

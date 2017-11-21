@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import SplitPane from 'react-split-pane';
+import { Tabs, TabList, TabPanel, Tab } from 'react-tabs'
 import FaArrowUpward from 'react-icons/lib/fa/arrow-circle-up';
 import { NetworkSwitch } from '../components/NetworkSwitch';
 import WalletInfo from '../components/WalletInfo';
 import TransactionHistory from '../components/TransactionHistory';
 import Logout from '../components/Logout';
 import Send from '../components/Send';
+import Assets from '../components/Assets';
 import { togglePane } from '../modules/dashboard';
 import { version } from '../../package.json'
 import { log } from '../util/Logs';
@@ -51,12 +53,23 @@ class Dashboard extends Component {
                   <WalletInfo />
                 </SplitPane>
               </SplitPane>
-              <TransactionHistory />
+              <Tabs>
+                <TabList>
+                  <Tab><div>Assets</div></Tab>
+                  <Tab><div>Transaction History</div></Tab>
+                </TabList>
+                <TabPanel>
+                    <Assets />
+                </TabPanel>
+                <TabPanel>
+                  <TransactionHistory />
+                </TabPanel>
+              </Tabs>
+
             </SplitPane>
           </SplitPane>
         </div>);
   }
-
 }
 
 const mapStateToProps = (state) => ({

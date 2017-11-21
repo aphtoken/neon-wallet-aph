@@ -32,7 +32,6 @@ const checkVersion = (dispatch, net) => {
 // putting this back in wallet, does not belong in neon-js
 export const getMarketPriceUSD = (amount) => {
   return axios.get('https://bittrex.com/api/v1.1/public/getticker?market=USDT-NEO').then((response) => {
-      console.log(response);
       let lastUSDNEO = Number(response.data.result.Last);
       return ('$' + (lastUSDNEO * amount).toFixed(2).toString());
   });
@@ -45,7 +44,6 @@ const initiateGetBalance = (dispatch, net, address) => {
   syncAvailableClaim(dispatch, net, address);
   syncBlockHeight(dispatch, net);
   return getBalance(net, address).then((resultBalance) => {
-    console.log("resultBalance", resultBalance)
     return getMarketPriceUSD(resultBalance.NEO.balance).then((resultPrice) => {
       if (resultPrice === undefined || resultPrice === null){
         dispatch(setBalance(resultBalance.NEO.balance, resultBalance.GAS.balance, '--'));
@@ -55,8 +53,6 @@ const initiateGetBalance = (dispatch, net, address) => {
       return true;
     }).catch((e) => {
       dispatch(setBalance(resultBalance.NEO.balance, resultBalance.GAS.balance, '--'));
-      console.log("something went wrong")
-
     });
   }).catch((result) => {
     // If API dies, still display balance
@@ -64,9 +60,7 @@ const initiateGetBalance = (dispatch, net, address) => {
 };
 
 const syncAvailableClaim = (dispatch, net, address) => {
-  console.log("trying to get claim");
   getClaimAmounts(net, address).then((result) => {
-    console.log(result);
     //claimAmount / 100000000
     dispatch(setClaim(result.available, result.unavailable));
   });
