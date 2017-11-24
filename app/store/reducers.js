@@ -9,6 +9,7 @@ import dashboard from '../modules/dashboard'
 import rpx from '../modules/rpx'
 import notifications from '../modules/notifications'
 import modal from '../modules/modal'
+import nep from '../modules/nep'
 
 export default combineReducers({
   account,
@@ -20,5 +21,6 @@ export default combineReducers({
   claim,
   rpx,
   notifications,
-  modal
+  modal,
+  nep
 })

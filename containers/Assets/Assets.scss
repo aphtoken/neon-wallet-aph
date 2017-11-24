@@ -1,0 +1,32 @@
+@import '../../styles/variables';
+
+.assetsContainer{
+  margin: 20px 20px;
+  .controls{
+    display: flex;
+    margin-bottom: 10px;
+    input{
+      flex: 4;
+      margin-right: 2px;
+    }
+    button{
+      flex: 1;
+    }
+  }
+  ul#assetList{
+    .assetListItem{
+      font-family: 'helvetica neue', 'helvetica', sans-serif;
+      font-size: .65em;
+      letter-spacing: .07em;
+      .amountBig{
+        font-weight:200;
+        font-size:2.4em;
+        color:$default-button;;
+        margin:0px 0px 2px 0px;
+      }
+      .symbol, .balance{
+        width: 50%;
+      }
+    }
+  }
+}

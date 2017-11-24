@@ -1,0 +1,43 @@
+@import '../../styles/variables';
+
+.assetsContainer{
+  margin: 20px 20px;
+  .controls{
+    display: flex;
+    margin-bottom: 10px;
+    input{
+      flex: 4;
+      margin-right: 2px;
+    }
+    button{
+      flex: 1;
+    }
+  }
+  .assetList{
+    margin:0px 0px 10px 0px;
+    padding:0;
+    overflow-y: auto;
+    height:600px;
+    li {
+        list-style-type: none;
+        font-weight: 200;
+        border-bottom: 1px solid $spacer-color;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        font-family: 'helvetica neue', 'helvetica', sans-serif;
+        font-size: .65em;
+        letter-spacing: .07em;
+        .amountBig{
+            font-weight:200;
+            font-size:2.4em;
+            color:$default-button;;
+            margin:0px 0px 2px 0px;
+        }
+      .delete{
+        margin-left: 5px;
+        cursor: hand;
+        cursor: pointer;
+      }
+    }
+  }
+}

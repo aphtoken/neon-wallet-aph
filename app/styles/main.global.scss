@@ -207,7 +207,7 @@ input {
             font-weight: 200;
         }
     }
-    
+
     #confirmPane {
         margin: 0px auto;
         button {
@@ -343,7 +343,7 @@ input {
             color: $button-text;
         }
     }
-}   
+}
 .sendSplit {
     .Pane1 {
         background-color: $secondary-background;
@@ -378,11 +378,36 @@ input {
     .ReactModal__Overlay {
         opacity: 0;
         transition: opacity 200ms ease-in-out;
-        &--after-open {            
+        &--after-open {
             opacity: 1;
         }
         &--before-close {
             opacity: 0;
         }
     }
+}
+
+//classes to add support for tabs
+.react-tabs__tab-list {
+  padding: 0;
+  display: flex;
+  margin: 0;
+}
+.react-tabs__tab {
+  display: inline-block;
+  position: relative;
+  list-style: none;
+  cursor: pointer;
+  font-weight: 200;
+  font-size: 1.2em;
+  flex: 1;
+  text-align: center;
+  padding: 16px 0px;
+
+  &:hover{
+    background: $secondary-background;
+  }
+}
+.react-tabs__tab--selected {
+  border-bottom: 2px solid $default-button;
 }
