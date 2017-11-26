@@ -1,10 +1,10 @@
 {
   "name": "Aphelion",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "./main.js",
   "description": "Light wallet for NEO blockchain",
   "homepage": "https://github.com/aphtoken/neon-wallet",
-  "author": "Ethan Fast <ejhfast@gmail.com> (https://github.com/Ejhfast)",
+  "author": "Support@aphelion.org",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "start": "electron .",
