@@ -68,7 +68,7 @@ class Assets extends Component {
         <div>
             <div className="assetsContainer">
                 <div className="controls">
-                    <input placeholder="Write your NEP5 hashscript" ref={(node) => hashToAdd = node} />
+                    <input placeholder="Enter Scripthash" ref={(node) => hashToAdd = node} />
                     <button className="loginButton" onClick={(e) => this.addNepToStore( this.props.dispatch )}>Add</button>
                 </div>
                 <div class="spacer" ></div>
