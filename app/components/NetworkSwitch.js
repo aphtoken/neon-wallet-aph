@@ -101,9 +101,9 @@ const toggleNet = (dispatch, net, address) => {
   if (net === "MainNet"){
     newNet = "TestNet";
   } else if (net === "TestNet"){
-      newNet = "AphelionMainNet";
-  } else if (net === "AphelionMainNet"){
-      newNet = "AphelionTestNet";
+      newNet = "MainNet-A";
+  } else if (net === "MainNet-A"){
+      newNet = "TestNet-A";
   } else {
       newNet = "MainNet";
   }

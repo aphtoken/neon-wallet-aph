@@ -9,14 +9,14 @@ import { clipboard } from 'electron';
 const getExplorerLink = (net, explorer, txid) => {
   let base;
   if (explorer === "Neotracker"){
-    if (net === "MainNet" || net === "AphelionMainNet"){
+    if (net === "MainNet" || net === "MainNet-A"){
       base = "https://neotracker.io/tx/";
     } else {
       base = "https://testnet.neotracker.io/tx/";
     }
   }
   else {
-    if (net === "MainNet"  || net === "AphelionMainNet"){
+    if (net === "MainNet"  || net === "MainNet-A"){
       base = "http://antcha.in/tx/hash/";
     } else {
       base = "http://testnet.antcha.in/tx/hash/";
