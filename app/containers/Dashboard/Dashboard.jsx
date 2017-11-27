@@ -7,6 +7,7 @@ import PriceDisplay from '../../components/PriceDisplay'
 import WalletInfo from '../WalletInfo'
 import TransactionHistory from '../TransactionHistory'
 import Logout from '../../components/Logout'
+import Logo from '../../components/Logo'
 import Send from '../../containers/Send'
 import { version } from '../../../package.json'
 import { log } from '../../util/Logs'
@@ -57,7 +58,7 @@ export default class Dashboard extends Component<Props> {
         >
           <div style={{ marginTop: 0, position: 'relative', width: '100%' }}>
             <div className={styles.title}>
-              <img src={logo} width='60px' />
+              <Logo/>
             </div>
             <PriceDisplay neoPrice={neoPrice} gasPrice={gasPrice} />
             <div className={styles.version}>

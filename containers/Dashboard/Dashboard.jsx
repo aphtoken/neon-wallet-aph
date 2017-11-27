@@ -57,7 +57,7 @@ export default class Dashboard extends Component<Props> {
         >
           <div style={{ marginTop: 0, position: 'relative', width: '100%' }}>
             <div className={styles.title}>
-              <img src={logo} width='60px' />
+              <img src={logo} width="130px" height="24px" />
             </div>
             <PriceDisplay neoPrice={neoPrice} gasPrice={gasPrice} />
             <div className={styles.version}>
