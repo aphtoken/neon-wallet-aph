@@ -24,8 +24,6 @@ export default class TransactionHistory extends Component<Props> {
     const { transactions, net, explorer, isLoadingTransactions } = this.props
     return (
       <div id='transactionInfo' className={styles.transactionInfo}>
-        <div className={classNames(styles.columnHeader, 'columnHeader')}>Transaction History</div>
-        <div className={classNames(styles.headerSpacer, 'headerSpacer')} />
         {isLoadingTransactions
           ? <Loader />
           : <Transactions
