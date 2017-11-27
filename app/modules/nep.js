@@ -3,7 +3,7 @@
  */
 // Constants
 
-import { getTokenBalance } from 'neon-js'
+import { getTokenBalance, getTokenInfo } from 'neon-js'
 import asyncWrap from '../core/asyncHelper'
 export const SET_NEP5 = 'SET_NEP5';
 export const ADD_NEP5 = 'ADD_NEP5';
@@ -52,6 +52,13 @@ export function addHashBalance(hashscript, balance){
 export const initiateGetAssetsBalance = (net: NetworkType, address: string, nep5: string[]) => async (dispatch: DispatchType) => {
   nep5.map((hash, index) => {
     refreshAssetBalance(net, address, hash, dispatch);
+    console.log('calling get token info');
+    getTokenInfo(net, hash).then((response) => {
+      console.log('response when getting info for hash', hash, response);
+    }).catch((e) => {
+      console.log('error when getting info for hash', hash, e);
+      return false;
+    });
   });
 }
 
@@ -60,7 +67,6 @@ export const addNepToStore = (hashToAdd: string) => (dispatch: DispatchType) => 
 }
 
 export const removeNepFromStore = (hashToRemove: string, index: integer) => (dispatch: DispatchType) => {
-  console.log('im removing', hashToRemove, index);
   dispatch(removeNep5(hashToRemove, index));
 }
 

@@ -11,8 +11,8 @@ type Props = {
 
 class App extends Component<Props> {
   componentDidMount () {
-    const { checkVersion } = this.props
-    checkVersion()
+    /*const { checkVersion } = this.props
+    checkVersion()*/
   }
 
   render () {
