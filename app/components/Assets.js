@@ -11,6 +11,7 @@ let hashToAdd;
 
 const refreshAssetBalance = (dispatch, net, address, hashscript) => {
     Neon.getTokenBalance(net, hashscript.slice(2, hashscript.length), address).then((balance) => {
+        balance = !balance || isNaN(balance) ? 0 : balance;
         dispatch(addHashBalance(hashscript, balance));
     }).catch((e) => {
         dispatch(addHashBalance(hashscript, 0));

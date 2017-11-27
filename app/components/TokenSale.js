@@ -24,6 +24,7 @@ const refreshTokenBalance = (dispatch, net, address, silent = false) => {
     return false;
   }
   Neon.getTokenBalance(net, scriptHashElement.value.slice(2, scriptHashElement.value.length), address).then((balance) => {
+    balance = !balance || isNaN(balance) ? 0 : balance;
     dispatch(updateRpxBalance(balance))
   }).catch((e) => {
     dispatch(updateRpxBalance(0))
@@ -102,10 +103,10 @@ class TokenSale extends Component {
       <div className="description">Participate in Token Sale</div>
       <div className="warning">
         <b>WARNING:</b> Be very careful with how you participate in a sale! This interface may not work for all sales! Submitting NEO multiple times to a sale may result in lost funds
-        or a delayed refund depending on the policy of the sale. CoZ is not responsible for any mistakes you make participating in
+        or a delayed refund depending on the policy of the sale. Aphelion is not responsible for any mistakes you make participating in
         a sale. After submitting to a sale, you will need to <b>WAIT SOME TIME</b> for the balance of tokens to refresh. You can click
         "Refresh Token" after 10s if you still do not see anything. It is also possible that nodes may not update properly with your token balance,
-        so <b>THINK VERY CAREFULLY</b> before resubmitting to a sale. Do not click "Submit" twice. CoZ does not endorse any token sale!
+        so <b>THINK VERY CAREFULLY</b> before resubmitting to a sale. Do not click "Submit" twice. Aphelion does not endorse any token sale other than APH tokens!
       </div>
       <div className="settingsForm">
         <div className="settingsItem">

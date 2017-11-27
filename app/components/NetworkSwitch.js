@@ -116,7 +116,7 @@ const toggleNet = (dispatch, net, address) => {
 
 class NetworkSwitch extends Component {
   componentDidMount = () => {
-    checkVersion(this.props.dispatch, this.props.net);
+    //checkVersion(this.props.dispatch, this.props.net);
     resetBalanceSync(this.props.dispatch, this.props.net, this.props.address);
   }
 
