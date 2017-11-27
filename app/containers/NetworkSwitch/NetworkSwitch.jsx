@@ -31,7 +31,8 @@ export default class NetworkSwitch extends Component<Props> {
 
   toggleNet = (net: NetworkType, address: string) => {
     const { setNetwork, initiateGetBalance } = this.props
-    const newNet = net === NETWORK.MAIN ? NETWORK.TEST : NETWORK.MAIN
+    const newNet = net === NETWORK.MAIN ? NETWORK.TEST : net === NETWORK.TEST? NETWORK.APHELION_MAIN : net === NETWORK.APHELION_MAIN? NETWORK.APHELION_TEST : NETWORK.MAIN
+    console.log('setting up the new net', net);
     setNetwork(newNet)
     this.resetBalanceSync(newNet, address)
     if (address !== null) {

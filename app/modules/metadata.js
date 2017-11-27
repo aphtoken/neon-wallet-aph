@@ -13,7 +13,7 @@ export const SET_EXPLORER = 'SET_EXPLORER'
 
 // Actions
 export function setNetwork (net: NetworkType) {
-  const network = net === NETWORK.MAIN ? NETWORK.MAIN : NETWORK.TEST
+  const network = net === NETWORK.MAIN? NETWORK.MAIN : net === NETWORK.APHELION_MAIN? NETWORK.APHELION_MAIN: net === NETWORK.APHELION_TEST? NETWORK.APHELION_TEST: NETWORK.TEST
   return {
     type: SET_NETWORK,
     payload: { network }

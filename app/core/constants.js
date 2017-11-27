@@ -4,7 +4,9 @@ export const NEON_WALLET_RELEASE_LINK = 'https://github.com/CityOfZion/neon-wall
 
 export const NETWORK = {
   MAIN: 'MainNet',
-  TEST: 'TestNet'
+  TEST: 'TestNet',
+  APHELION_MAIN: 'MainNet-A',
+  APHELION_TEST: 'TestNet-A'
 }
 
 export const EXPLORER = {

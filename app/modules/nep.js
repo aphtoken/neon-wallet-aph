@@ -53,12 +53,12 @@ export const initiateGetAssetsBalance = (net: NetworkType, address: string, nep5
   nep5.map((hash, index) => {
     refreshAssetBalance(net, address, hash, dispatch);
     console.log('calling get token info');
-    getTokenInfo(net, hash).then((name, symbol, decimals, totalSupply) => {
+    /*getTokenInfo(net, hash).then((name, symbol, decimals, totalSupply) => {
       console.log('response when getting info for hash', hash, symbol);
     }).catch((e) => {
       console.log('error when getting info for hash', hash, e);
       return false;
-    });
+    });*/
   });
 }
 
