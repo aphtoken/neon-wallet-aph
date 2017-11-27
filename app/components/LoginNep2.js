@@ -67,7 +67,7 @@ class LoginNep2 extends Component {
             <FaEyeSlash className="viewKey" onClick={this.toggleKeyVisibility} /> :
             <FaEye className="viewKey" onClick={this.toggleKeyVisibility} />
           }
-          <input type="text" placeholder="Enter your encrypted key here" ref={(node) => wif_input = node}  />
+          <input type="password" placeholder="Enter your encrypted key here" ref={(node) => wif_input = node}  />
         </div>
         <div className="loginButtons">
           <button className="loginButton" onClick={(e) => onWifChange(dispatch, this.props.history)}>Login</button>
