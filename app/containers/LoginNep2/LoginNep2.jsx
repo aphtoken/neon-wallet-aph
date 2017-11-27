@@ -52,7 +52,7 @@ export default class LoginNep2 extends Component<Props, State> {
             : <FaEye className={loginStyles.viewKey} onClick={this.toggleKeyVisibility} />
           }
           <input
-            type='text'
+            type='password'
             placeholder='Enter your encrypted key here'
             onChange={(e) => this.setState({ wif: e.target.value })}
             value={wif}

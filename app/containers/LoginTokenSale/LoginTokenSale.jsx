@@ -4,6 +4,8 @@ import Page from '../../components/Page'
 import HomeButtonLink from '../../components/HomeButtonLink'
 import { ROUTES } from '../../core/constants'
 import loginStyles from '../../styles/login.scss'
+import FaEye from 'react-icons/lib/fa/eye'
+import FaEyeSlash from 'react-icons/lib/fa/eye-slash'
 
 type Props = {
   loginWithPrivateKey: Function,
@@ -11,17 +13,25 @@ type Props = {
 }
 
 type State = {
+  showKey: false,
   wif: string
 }
 
 export default class LoginTokenSale extends Component<Props, State> {
   state = {
+    showKey: false,
     wif: ''
+  }
+
+  toggleKeyVisibility = () => {
+    this.setState(prevState => ({
+      showKey: !prevState.showKey
+    }))
   }
 
   render () {
     const { history, loginWithPrivateKey } = this.props
-    const { wif } = this.state
+    const { wif, showKey } = this.state
     const loginButtonDisabled = wif === ''
 
     return (
@@ -29,12 +39,16 @@ export default class LoginTokenSale extends Component<Props, State> {
         <div className={loginStyles.title}>Participate in Token Sale:</div>
         <div className={loginStyles.loginForm}>
           <input
-            type='text'
+            type={showKey ? 'text' : 'password'}
             placeholder='Enter your private key here (WIF)'
             onChange={(e) => this.setState({ wif: e.target.value })}
             value={wif}
             autoFocus
           />
+          {showKey
+            ? <FaEyeSlash className={loginStyles.viewKey} onClick={this.toggleKeyVisibility} />
+            : <FaEye className={loginStyles.viewKey} onClick={this.toggleKeyVisibility} />
+          }
         </div>
         <div>
           <button
