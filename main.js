@@ -1,7 +1,7 @@
 const {app, shell, Menu, BrowserWindow} = require('electron');
 const path = require('path');
 const url = require('url');
-const debugTools = require('electron-debug')({showDevTools: true});
+//const debugTools = require('electron-debug')({showDevTools: true});
 
 let mainWindow = null;
 
