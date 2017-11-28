@@ -29,6 +29,7 @@ export const refreshTokenBalance = (scriptHash: string, silent: boolean = false)
     return false
   }
   getTokenBalance(net, scriptHash.slice(2, scriptHash.length), address).then((balance) => {
+    balance = !balance || isNaN(balance) ? 0 : balance;
     dispatch(updateRpxBalance(balance))
   }).catch((e) => {
     dispatch(updateRpxBalance(0))
