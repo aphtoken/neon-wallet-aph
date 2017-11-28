@@ -5,6 +5,7 @@ import { initiateGetAssetsBalance, addNepToStore, setNepToStore, removeNepFromSt
 import axios from 'axios';
 import storage from 'electron-json-storage'
 import SplitPane from 'react-split-pane'
+import ReactTooltip from 'react-tooltip'
 
 export let intervals = {}
 
@@ -53,6 +54,12 @@ export default class Assets extends Component<Props> {
     }
   }
 
+  addNep(hash){
+    const {addNepToStore} = this.props
+    addNepToStore(hash);
+    hashToAdd.value = '';
+  }
+
   render () {
     const {symbols, addNepToStore, removeNepFromStore} = this.props
     return (
@@ -60,7 +67,7 @@ export default class Assets extends Component<Props> {
         <div className={styles.assetsContainer}>
           <div className={styles.controls}>
             <input placeholder="Write your NEP5 hashscript" ref={(node) => hashToAdd = node}/>
-            <button className="loginButton" onClick={(e) => addNepToStore( hashToAdd.value )}>Add</button>
+            <button className="loginButton" onClick={(e) => this.addNep( hashToAdd.value )}>Add</button>
           </div>
           <ul className={styles.assetList}>
             { this.props.nep5.map((hash, index) => {
@@ -68,7 +75,13 @@ export default class Assets extends Component<Props> {
               return (
                 <li key={hash}>
                   <div className={styles.amountBig}>{ symbols[hash] ? symbols[hash] + ' ' : '' }{ balance }</div>
-                  <div><span><strong>Hash:</strong> { hash }</span><span className={styles.delete} onClick={(e) => removeNepFromStore( hash, index )}>X</span></div>
+                  <div>
+                    <span><strong>Hash:</strong> { hash }</span>
+                    <span id={'delete_' + hash} className={styles.delete} data-tip data-for={'deleteHash_' + index} onClick={(e) => removeNepFromStore( hash, index )}>X</span>
+                    <ReactTooltip class='solidTip' id={'deleteHash_' + index} place='bottom' type='dark' effect='solid'>
+                      <span>Remove Hash</span>
+                    </ReactTooltip>
+                  </div>
                 </li>);
             })}
           </ul>
