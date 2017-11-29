@@ -11,7 +11,9 @@ const mapStateToProps = (state) => ({
   neo: getNeo(state),
   gas: getGas(state),
   selectedAsset: getSelectedAsset(state),
-  confirmPane: getConfirmPane(state)
+  confirmPane: getConfirmPane(state),
+  nep5: state.nep.nep5,
+  symbols: state.nep.symbols
 })
 
 const actionCreators = {

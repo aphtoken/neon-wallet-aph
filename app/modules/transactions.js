@@ -15,8 +15,9 @@ import asyncWrap from '../core/asyncHelper'
 export const TOGGLE_ASSET = 'TOGGLE_ASSET'
 export const LOADING_TRANSACTIONS = 'LOADING_TRANSACTIONS'
 
-export const toggleAsset = () => ({
-  type: TOGGLE_ASSET
+export const toggleAsset = ( hash: string) => ({
+  type: TOGGLE_ASSET,
+  asset: hash
 })
 
 export const setIsLoadingTransaction = (isLoading: boolean) => ({
@@ -107,7 +108,7 @@ export default (state: Object = initialState, action: Object) => {
     case TOGGLE_ASSET:
       return {
         ...state,
-        selectedAsset: state.selectedAsset === ASSETS_LABELS.NEO ? ASSETS_LABELS.GAS : ASSETS_LABELS.NEO
+        selectedAsset: action.asset
       }
     case LOGOUT:
       return initialState

@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import SplitPane from 'react-split-pane'
 import ReactTooltip from 'react-tooltip'
 import { validateTransactionBeforeSending } from '../../core/wallet'
+import { ASSETS_LABELS, ASSETS } from '../../core/constants'
 
 type Props = {
   togglePane: Function,
@@ -11,8 +12,10 @@ type Props = {
   toggleAsset: Function,
   neo: number,
   gas: number,
+  nep5: string[],
+  symbols: Object[],
   confirmPane: boolean,
-  selectedAsset: string,
+  selectedAsset: string
 }
 
 type State = {
@@ -40,6 +43,25 @@ export default class Send extends Component<Props, State> {
     }
   }
 
+  nextAsset = () => {
+    const { selectedAsset, nep5, symbols, toggleAsset } = this.props
+    let newAsset = ASSETS_LABELS.NEO;
+    let currentIndex = Object.keys(symbols).findIndex( hash => symbols[hash] === selectedAsset );
+    let symbolRecord = Object.keys(symbols).find( hash => symbols[hash] === selectedAsset );
+    let currentHash = Object.keys(symbols)[currentIndex];
+    let nextHash = Object.keys(symbols)[currentIndex + 1];
+    let currentSymbol = symbols[currentHash];
+    let nextSymbol = symbols[nextHash];
+    if( currentSymbol &&  nextSymbol ){
+      newAsset = nextSymbol;
+    }else if(selectedAsset === ASSETS_LABELS.NEO){
+      newAsset = ASSETS_LABELS.GAS;
+    }else if(selectedAsset === ASSETS_LABELS.GAS && Object.keys(symbols).length > 0){
+      newAsset = symbols[ Object.keys(symbols)[0] ]
+    }
+    toggleAsset(newAsset);
+  }
+
   // perform send transaction
   sendTransaction = () => {
     const { sendTransaction, togglePane } = this.props
@@ -61,7 +83,7 @@ export default class Send extends Component<Props, State> {
   }
 
   render () {
-    const { confirmPane, selectedAsset, toggleAsset } = this.props
+    const { confirmPane, selectedAsset } = this.props
     const { sendAddress, sendAmount } = this.state
     const confirmPaneClosed = confirmPane ? '100%' : '69%'
 
@@ -85,9 +107,9 @@ export default class Send extends Component<Props, State> {
               onChange={(e) => this.setState({ sendAmount: e.target.value })}
             />
           </div>
-          <button id='sendAsset' data-tip data-for='assetTip' onClick={() => toggleAsset()}>{selectedAsset}</button>
+          <button id='sendAsset' data-tip data-for='assetTip' onClick={() => this.nextAsset()}>{selectedAsset}</button>
           <ReactTooltip class='solidTip' id='assetTip' place='bottom' type='dark' effect='solid'>
-            <span>Toggle NEO / GAS</span>
+            <span>Toggle NEO / GAS / Assets</span>
           </ReactTooltip>
           <button id='doSend' onClick={this.openAndValidate}>Send Asset</button>
         </div>
