@@ -4668,7 +4668,7 @@ negotiator@0.6.1:
 
 "neon-js@git+https://github.com/aphtoken/neon-js":
   version "1.1.0"
-  resolved "git+https://github.com/aphtoken/neon-js#9a576a587fd209ba432a3a1925b10293d0686020"
+  resolved "git+https://github.com/aphtoken/neon-js#652dec7e7509bc4ae7094f3f759757acda006ed4"
   dependencies:
     axios "^0.16.2"
     base-x "^3.0.2"
