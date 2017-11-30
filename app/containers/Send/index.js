@@ -2,18 +2,22 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Send from './Send'
-import { sendTransaction, toggleAsset, getSelectedAsset } from '../../modules/transactions'
+import { sendTransaction, toggleAsset, getSelectedAsset, getSelectedHash } from '../../modules/transactions'
 import { showErrorNotification } from '../../modules/notifications'
 import { togglePane, getConfirmPane } from '../../modules/dashboard'
 import { getNeo, getGas } from '../../modules/wallet'
+import { getBalances, getSymbols, getNep5 } from '../../modules/nep'
+
 
 const mapStateToProps = (state) => ({
   neo: getNeo(state),
   gas: getGas(state),
   selectedAsset: getSelectedAsset(state),
+  selectedHash: getSelectedHash(state),
   confirmPane: getConfirmPane(state),
-  nep5: state.nep.nep5,
-  symbols: state.nep.symbols
+  nep5: getNep5(state),
+  symbols: getSymbols(state),
+  balances: getBalances(state)
 })
 
 const actionCreators = {

@@ -14,8 +14,10 @@ type Props = {
   gas: number,
   nep5: string[],
   symbols: Object[],
+  balances: Object[],
   confirmPane: boolean,
-  selectedAsset: string
+  selectedAsset: string,
+  selectedHash: string
 }
 
 type State = {
@@ -33,9 +35,9 @@ export default class Send extends Component<Props, State> {
 
   // open confirm pane and validate fields
   openAndValidate = () => {
-    const { neo, gas, selectedAsset, togglePane, showErrorNotification } = this.props
+    const { neo, gas, selectedAsset, selectedHash, togglePane, showErrorNotification, balances } = this.props
     const { sendAddress, sendAmount } = this.state
-    const { error, valid } = validateTransactionBeforeSending(neo, gas, selectedAsset, sendAddress, sendAmount)
+    const { error, valid } = validateTransactionBeforeSending(neo, gas, selectedAsset, selectedHash, balances, sendAddress, sendAmount)
     if (valid) {
       togglePane('confirmPane')
     } else {
@@ -44,22 +46,23 @@ export default class Send extends Component<Props, State> {
   }
 
   nextAsset = () => {
-    const { selectedAsset, nep5, symbols, toggleAsset } = this.props
+    const { selectedAsset, selectedHash, nep5, symbols, toggleAsset } = this.props
     let newAsset = ASSETS_LABELS.NEO;
-    let currentIndex = Object.keys(symbols).findIndex( hash => symbols[hash] === selectedAsset );
-    let symbolRecord = Object.keys(symbols).find( hash => symbols[hash] === selectedAsset );
-    let currentHash = Object.keys(symbols)[currentIndex];
-    let nextHash = Object.keys(symbols)[currentIndex + 1];
-    let currentSymbol = symbols[currentHash];
-    let nextSymbol = symbols[nextHash];
-    if( currentSymbol &&  nextSymbol ){
-      newAsset = nextSymbol;
+    let currentIndex = nep5.findIndex( hash => hash === selectedHash );
+    let nextHash = nep5[currentIndex + 1];
+    let nextSymbol = symbols[nextHash]
+    if( selectedHash &&  nextHash ){
+      newAsset = nextHash;
     }else if(selectedAsset === ASSETS_LABELS.NEO){
       newAsset = ASSETS_LABELS.GAS;
+      nextSymbol = ASSETS_LABELS.GAS;
     }else if(selectedAsset === ASSETS_LABELS.GAS && Object.keys(symbols).length > 0){
       newAsset = symbols[ Object.keys(symbols)[0] ]
     }
-    toggleAsset(newAsset);
+    if(newAsset === ASSETS_LABELS.NEO){
+      nextSymbol = ASSETS_LABELS.NEO;
+    }
+    toggleAsset(nextSymbol? nextSymbol : (currentIndex + 2)+'°', newAsset); //add +2 since humans count from 1
   }
 
   // perform send transaction

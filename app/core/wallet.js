@@ -16,17 +16,11 @@ export const verifyPrivateKey = (wif: string): boolean => {
   return account !== -1 && account.address
 }
 
-export const validateTransactionBeforeSending = (neoBalance: number, gasBalance: number, selectedAsset: string, sendAddress: string, sendAmount: string) => {
+export const validateTransactionBeforeSending = (neoBalance: number, gasBalance: number, selectedAsset: string, selectedHash: string, balances: Object[], sendAddress: string, sendAmount: string) => {
+  console.log('entered validation');
   if (!sendAddress || !sendAmount) {
     return {
       error: 'Please specify an address and amount',
-      valid: false
-    }
-  }
-
-  if (selectedAsset !== ASSETS_LABELS.NEO && selectedAsset !== ASSETS_LABELS.GAS) {
-    return {
-      error: 'That asset is not Neo or Gas',
       valid: false
     }
   }
@@ -55,6 +49,14 @@ export const validateTransactionBeforeSending = (neoBalance: number, gasBalance:
     if (parseFloat(sendAmount) > gasBalance) {
       return {
         error: 'You do not have enough GAS to send.',
+        valid: false
+      }
+    }
+  } else if(selectedHash){
+    console.log('these are the balances', balances)
+    if ( !balances[selectedHash] ||  parseFloat(sendAmount) > parseFloat(balances[selectedHash]) ){
+      return {
+        error: 'You do not have enough to send.',
         valid: false
       }
     }

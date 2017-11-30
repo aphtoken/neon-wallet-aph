@@ -84,6 +84,12 @@ export const refreshAssetBalance = ( net, address, hashscript, dispatch ) => {
   });
 }
 
+// state getters
+export const getBalances = (state) => state.nep.balances
+export const getSymbols = (state) => state.nep.symbols
+export const getNep5 = (state) => state.nep.nep5
+
+
 // reducer for nep5 hash contracts. The initial state will include the hash script for Aphelion
 export default (state = { nep5: initialNep5ReducerState , balances: {}, symbols: initialNep5Symbols }, action) => {
     switch (action.type) {

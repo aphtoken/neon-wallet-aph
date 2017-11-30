@@ -3,7 +3,7 @@
 
 import { ASSETS_LABELS, ASSETS } from '../core/constants'
 import { validateTransactionBeforeSending } from '../core/wallet'
-import { getTransactionHistory, doSendAsset, hardwareDoSendAsset } from 'neon-js'
+import { getTransactionHistory, doSendAsset, hardwareDoSendAsset, transferTransaction } from 'neon-js'
 import { setTransactionHistory, getNeo, getGas } from './wallet'
 import { log } from '../util/Logs'
 import { showErrorNotification, showInfoNotification, showSuccessNotification } from './notifications'
@@ -15,9 +15,10 @@ import asyncWrap from '../core/asyncHelper'
 export const TOGGLE_ASSET = 'TOGGLE_ASSET'
 export const LOADING_TRANSACTIONS = 'LOADING_TRANSACTIONS'
 
-export const toggleAsset = ( hash: string) => ({
+export const toggleAsset = ( symbol: string,  hash: string) => ({
   type: TOGGLE_ASSET,
-  asset: hash
+  asset: symbol,
+  hash: hash
 })
 
 export const setIsLoadingTransaction = (isLoading: boolean) => ({
@@ -45,6 +46,7 @@ export const syncTransactionHistory = (net: NetworkType, address: string) => asy
 }
 
 export const sendTransaction = (sendAddress: string, sendAmount: string) => async (dispatch: DispatchType, getState: GetStateType): Promise<*> => {
+
   const state = getState()
   const wif = getWif(state)
   const address = getAddress(state)
@@ -52,37 +54,53 @@ export const sendTransaction = (sendAddress: string, sendAmount: string) => asyn
   const neo = getNeo(state)
   const gas = getGas(state)
   const selectedAsset = getSelectedAsset(state)
+  const selectedHash = getSelectedHash(state)
+  const balances = state.nep.balances
   const signingFunction = getSigningFunction(state)
   const publicKey = getPublicKey(state)
 
   const rejectTransaction = (message: string) => dispatch(showErrorNotification({ message }))
+  const { error, valid } = validateTransactionBeforeSending(neo, gas, selectedAsset, selectedHash, balances, sendAddress, sendAmount)
 
-  const { error, valid } = validateTransactionBeforeSending(neo, gas, selectedAsset, sendAddress, sendAmount)
   if (valid) {
-    const selfAddress = address
-    const assetName = selectedAsset === ASSETS_LABELS.NEO ? ASSETS.NEO : ASSETS.GAS
-    let sendAsset = {}
-    sendAsset[assetName] = sendAmount
+    if(selectedHash){
+      //run this logic for nep5 contracts
+      console.log('transfer money here');
 
-    dispatch(showInfoNotification({ message: 'Sending Transaction...', autoDismiss: 0 }))
-    log(net, 'SEND', selfAddress, { to: sendAddress, asset: selectedAsset, amount: sendAmount })
+      const [err, txResult] = await transferTransaction( [selectedHash], publicKey, sendAddress, sendAmount );
+      console.log('the transaction looks like', txResult);
+      if ( txResult === -1 || txResult == null || typeof txResult !== 'string') {
+        return rejectTransaction('Transfer transaction creation failed.');
+      }
 
-    const isHardwareSend = !!publicKey
 
-    let sendAssetFn
-    if (isHardwareSend) {
-      dispatch(showInfoNotification({ message: 'Please sign the transaction on your hardware device', autoDismiss: 0 }))
-      sendAssetFn = () => hardwareDoSendAsset(net, sendAddress, publicKey, sendAsset, signingFunction)
-    } else {
-      sendAssetFn = () => doSendAsset(net, sendAddress, wif, sendAsset)
+    }else{
+      const selfAddress = address
+      const assetName = selectedAsset === ASSETS_LABELS.NEO ? ASSETS.NEO : ASSETS.GAS
+      let sendAsset = {}
+      sendAsset[assetName] = sendAmount
+
+      dispatch(showInfoNotification({ message: 'Sending Transaction...', autoDismiss: 0 }))
+      log(net, 'SEND', selfAddress, { to: sendAddress, asset: selectedAsset, amount: sendAmount })
+
+      const isHardwareSend = !!publicKey
+
+      let sendAssetFn
+      if (isHardwareSend) {
+        dispatch(showInfoNotification({ message: 'Please sign the transaction on your hardware device', autoDismiss: 0 }))
+        sendAssetFn = () => hardwareDoSendAsset(net, sendAddress, publicKey, sendAsset, signingFunction)
+      } else {
+        sendAssetFn = () => doSendAsset(net, sendAddress, wif, sendAsset)
+      }
+
+      const [err, response] = await asyncWrap(sendAssetFn())
+      if (err || response.result === undefined || response.result === false) {
+        return rejectTransaction('Transaction failed!')
+      } else {
+        return dispatch(showSuccessNotification({ message: 'Transaction complete! Your balance will automatically update when the blockchain has processed it.' }))
+      }
     }
 
-    const [err, response] = await asyncWrap(sendAssetFn())
-    if (err || response.result === undefined || response.result === false) {
-      return rejectTransaction('Transaction failed!')
-    } else {
-      return dispatch(showSuccessNotification({ message: 'Transaction complete! Your balance will automatically update when the blockchain has processed it.' }))
-    }
   } else {
     return rejectTransaction(error)
   }
@@ -90,10 +108,12 @@ export const sendTransaction = (sendAddress: string, sendAmount: string) => asyn
 
 // state getters
 export const getSelectedAsset = (state) => state.transactions.selectedAsset
+export const getSelectedHash = (state) => state.transactions.selectedHash
 export const getIsLoadingTransactions = (state) => state.transactions.isLoadingTransactions
 
 const initialState = {
   selectedAsset: ASSETS_LABELS.NEO,
+  selectedHash: null,
   isLoadingTransactions: false
 }
 
@@ -108,7 +128,8 @@ export default (state: Object = initialState, action: Object) => {
     case TOGGLE_ASSET:
       return {
         ...state,
-        selectedAsset: action.asset
+        selectedAsset: action.asset,
+        selectedHash: action.hash
       }
     case LOGOUT:
       return initialState
