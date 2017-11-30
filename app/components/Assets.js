@@ -76,14 +76,23 @@ class Assets extends Component {
                 <ul id="assetList">
                     { this.props.nep5.map((hash) => {
                         let balance = this.props.balances[hash];
-                        let symbol = "";
                         if ( hash == 0xecc6b20d3ccac1ee9ef109af5a7cdb85706b1df9)
-                          symbol = "RPX ";
+                        {
+                          return (
+                              <li key={hash} className="assetListItem">
+                                  <div className="amountBig">RPX: { balance }</div>
+                          </li>);
+                        }
                         if ( hash == 0xa0777c3ce2b169d4a23bcba4565e3225a0122d95)
-                          symbol = "APH ";
+                        {
+                          return (
+                              <li key={hash} className="assetListItem">
+                                  <div className="amountBig">APH: { balance }</div>
+                          </li>);
+                        }
                         return (
                             <li key={hash} className="assetListItem">
-                                <div className="amountBig">{ symbol }{ balance }</div>
+                                <div className="amountBig">{ balance }</div>
                                 <div><span><strong>Hash:</strong> { hash }</span></div>
                         </li>);
                     })}
