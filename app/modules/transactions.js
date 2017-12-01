@@ -3,13 +3,17 @@
 
 import { ASSETS_LABELS, ASSETS } from '../core/constants'
 import { validateTransactionBeforeSending } from '../core/wallet'
-import { getTransactionHistory, doSendAsset, hardwareDoSendAsset, transferTransaction } from 'neon-js'
-import { setTransactionHistory, getNeo, getGas } from './wallet'
+import { getTransactionHistory, doSendAsset, hardwareDoSendAsset } from 'neon-js'
+import {setTransactionHistory, getNeo, getGas, createCoin} from './wallet'
 import { log } from '../util/Logs'
 import { showErrorNotification, showInfoNotification, showSuccessNotification } from './notifications'
 import { getWif, getPublicKey, getSigningFunction, getAddress, LOGOUT } from './account'
 import { getNetwork } from './metadata'
 import asyncWrap from '../core/asyncHelper'
+import { buildScript } from '../sc/scriptBuilder'
+import { reverseHex } from 'neon-js/src/utils'
+import { doInvokeScript } from 'neon-js/src/api'
+import { getScriptHashFromAddress } from 'neon-js/src/wallet'
 
 // Constants
 export const TOGGLE_ASSET = 'TOGGLE_ASSET'
@@ -65,14 +69,27 @@ export const sendTransaction = (sendAddress: string, sendAmount: string) => asyn
   if (valid) {
     if(selectedHash){
       //run this logic for nep5 contracts
-      console.log('transfer money here');
-
-      const [err, txResult] = await transferTransaction( [selectedHash], publicKey, sendAddress, sendAmount );
-      console.log('the transaction looks like', txResult);
-      if ( txResult === -1 || txResult == null || typeof txResult !== 'string') {
-        return rejectTransaction('Transfer transaction creation failed.');
-      }
-
+      let addressFrom = reverseHex(getScriptHashFromAddress(address))
+      let addressTo = reverseHex(getScriptHashFromAddress(sendAddress))
+      let script = buildScript(
+        {
+          scriptHash: selectedHash.slice(2) ,
+          operation: "transfer",
+          args: [addressFrom, addressTo, sendAmount]
+        }
+      );
+      console.log('i got this script', script);
+      let result = doInvokeScript(net, script, false)
+        .then((res) => {
+          //the response when invoking the script hash
+          console.log('The response when invoking the script hash balance of method', res)
+          /*if(  res.stack[0].type == "Integer"  )
+            return  res.stack[0].value / 100000000
+          else
+            return fixed82num(res.stack[0].value)*/
+        }).fail((e) => {
+          console.log('error on transfer', e)
+        })
 
     }else{
       const selfAddress = address
