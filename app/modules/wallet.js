@@ -67,6 +67,7 @@ export const getGasMarketPriceUSD = () => async (dispatch: DispatchType) => {
 export const retrieveBalance = (net: NetworkType, address: string) => async (dispatch: DispatchType) => {
   // If API dies, still display balance - ignore _err
   const [_err, resultBalance] = await asyncWrap(getBalance(net, address)) // eslint-disable-line
+  console.log('i just got the balance for this account', resultBalance);
   return dispatch(setBalance(resultBalance.NEO.balance, resultBalance.GAS.balance))
 }
 
