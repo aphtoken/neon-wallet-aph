@@ -9,6 +9,7 @@ export const SET_NEP5 = 'SET_NEP5';
 export const ADD_NEP5 = 'ADD_NEP5';
 export const REMOVE_NEP5 = 'REMOVE_NEP_5';
 export const ADD_HASH_BALANCE = 'ADD_HASH_BALANCE';
+export const ADD_HASH_DATA = 'ADD_HASH_DATA';
 
 //start with aphelion on your nep5 contracts
 let initialNep5ReducerState = ['0xa0777c3ce2b169d4a23bcba4565e3225a0122d95', '0xecc6b20d3ccac1ee9ef109af5a7cdb85706b1df9'];
@@ -49,16 +50,25 @@ export function addHashBalance(hashscript, balance){
     }
 }
 
+export function addHashData(hashscript, data){
+  return {
+    type: ADD_HASH_DATA,
+    payload: {
+      [hashscript]: data
+    }
+  }
+}
+
 export const initiateGetAssetsBalance = (net: NetworkType, address: string, nep5: string[]) => async (dispatch: DispatchType) => {
   nep5.map((hash, index) => {
     refreshAssetBalance(net, address, hash, dispatch);
-    console.log('calling get token info');
-    /*getTokenInfo(net, hash).then((name, symbol, decimals, totalSupply) => {
-      console.log('response when getting info for hash', hash, symbol);
+    console.log('calling get token info', hash.slice(2), hash, hash.length);
+    getTokenInfo(net, hash.slice(2)).then((name, symbol, decimals, totalSupply) => {
+      console.log('response when getting info for hash', hash, symbol, name, decimals, totalSupply);
     }).catch((e) => {
       console.log('error when getting info for hash', hash, e);
       return false;
-    });*/
+    });
   });
 }
 
@@ -104,6 +114,9 @@ export default (state = { nep5: initialNep5ReducerState , balances: {}, symbols:
         case ADD_HASH_BALANCE:
             let balanceState = Object.assign({}, state, { balances: { ...state.balances, ...action.payload }});
             return balanceState;
+        case ADD_HASH_DATA:
+            let dataState = Object.assign({}, state, { data: { ...state.data, ...action.payload }});
+            return dataState;
         default:
             return state;
     }
