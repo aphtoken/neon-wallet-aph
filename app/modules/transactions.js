@@ -1,9 +1,9 @@
 // @flow
 /* eslint-disable camelcase */
 
-import { ASSETS_LABELS, ASSETS } from '../core/constants'
+import { ASSETS_LABELS, ASSETS, ASSET_ID } from '../core/constants'
 import { validateTransactionBeforeSending } from '../core/wallet'
-import { getTransactionHistory, doSendAsset, hardwareDoSendAsset } from 'neon-js'
+import { getTransactionHistory, doSendAsset, hardwareDoSendAsset, getRPCEndpoint, getBalance, serializeTransaction } from 'neon-js'
 import {setTransactionHistory, getNeo, getGas, createCoin} from './wallet'
 import { log } from '../util/Logs'
 import { showErrorNotification, showInfoNotification, showSuccessNotification } from './notifications'
@@ -14,6 +14,9 @@ import { buildScript } from '../sc/scriptBuilder'
 import { reverseHex } from 'neon-js/src/utils'
 import { doInvokeScript } from 'neon-js/src/api'
 import { getScriptHashFromAddress } from 'neon-js/src/wallet'
+import { invocationTx } from 'neon-js/src/transactions/create'
+import { signTransaction } from 'neon-js/src/transactions/index'
+import { Query } from '../core/query'
 
 // Constants
 export const TOGGLE_ASSET = 'TOGGLE_ASSET'
@@ -69,27 +72,10 @@ export const sendTransaction = (sendAddress: string, sendAmount: string) => asyn
   if (valid) {
     if(selectedHash){
       //run this logic for nep5 contracts
-      let addressFrom = reverseHex(getScriptHashFromAddress(address))
-      let addressTo = reverseHex(getScriptHashFromAddress(sendAddress))
-      let script = buildScript(
-        {
-          scriptHash: selectedHash.slice(2) ,
-          operation: "transfer",
-          args: [addressFrom, addressTo, sendAmount]
-        }
-      );
-      console.log('i got this script', script);
-      let result = doInvokeScript(net, script, false)
-        .then((res) => {
-          //the response when invoking the script hash
-          console.log('The response when invoking the script hash balance of method', res)
-          /*if(  res.stack[0].type == "Integer"  )
-            return  res.stack[0].value / 100000000
-          else
-            return fixed82num(res.stack[0].value)*/
-        }).fail((e) => {
-          console.log('error on transfer', e)
-        })
+      doTransferToken(net, selectedHash.slice(2), wif, publicKey, address, sendAddress, sendAmount, 0, signingFunction)
+        .then((result) => {
+          console.log('the result from trying to transfer was', result);
+      })
 
     }else{
       const selfAddress = address
@@ -121,6 +107,62 @@ export const sendTransaction = (sendAddress: string, sendAmount: string) => asyn
   } else {
     return rejectTransaction(error)
   }
+}
+
+/**
+ * Transfers NEP5 Tokens.
+ * @param {string} net
+ * @param {string} scriptHash
+ * @param {string} wif
+ * @param {string} publickey
+ * @param {string} fromAddress
+ * @param {string} toAddress
+ * @param {number} transferAmount
+ * @param {number} gasCost
+ * @param {function} signingFunction
+ * @return {Promise<Response>} RPC response
+ */
+const doTransferToken = (net, scriptHash, wif, publickey, fromAddress, toAddress, transferAmount, gasCost = 0, signingFunction = null) => {
+
+  const rpcEndpointPromise = getRPCEndpoint(net)
+  const balancePromise = getBalance(net, fromAddress)
+  let signedTx
+  let endpt
+  return Promise.all([rpcEndpointPromise, balancePromise])
+    .then((values) => {
+      endpt = values[0]
+      const balances = values[1]
+      const fromAddrScriptHash = reverseHex(getScriptHashFromAddress(fromAddress))
+      const intents = [
+        { assetId: ASSET_ID.GAS, value: 0.00000001, scriptHash: fromAddrScriptHash }
+      ]
+      const toAddrScriptHash = reverseHex(getScriptHashFromAddress(toAddress))
+      const invoke = { scriptHash, operation: 'transfer', args: [fromAddrScriptHash, toAddrScriptHash, transferAmount] }
+      const unsignedTx = invocationTx(publickey, balances, intents, invoke, gasCost, { version: 1 })
+      if (signingFunction) {
+        return signingFunction(unsignedTx, publickey)
+      } else {
+        return signTransaction(unsignedTx, wif)
+      }
+    })
+    .then((signedResult) => {
+      signedTx = signedResult
+      return sendRawTransaction(signedTx).execute(endpt)
+    })
+    .then((res) => {
+      if (res.result === true) {
+        res.txid = signedTx
+      }
+      return res
+    })
+}
+
+export const sendRawTransaction = (transaction) => {
+  const serialized = typeof (transaction) === 'object' ? serializeTransaction(transaction) : transaction
+  return new Query({
+    method: 'sendrawtransaction',
+    params: [serialized]
+  })
 }
 
 // state getters

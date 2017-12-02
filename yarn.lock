@@ -2887,11 +2887,18 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
 
-ecurve@1.0.5, ecurve@^1.0.5:
+ecurve@1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/ecurve/-/ecurve-1.0.5.tgz#d148e8fe50a674f983bb5bae09da0ea23e10535e"
   dependencies:
     bigi "^1.1.0"
+
+ecurve@^1.0.5:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/ecurve/-/ecurve-1.0.6.tgz#dfdabbb7149f8d8b78816be5a7d5b83fcf6de797"
+  dependencies:
+    bigi "^1.1.0"
+    safe-buffer "^5.0.1"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -6012,9 +6019,9 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-"neon-js@https://github.com/aphtoken/neon-js.git":
+"neon-js@https://github.com/aphtoken/neon-js":
   version "1.1.0"
-  resolved "https://github.com/aphtoken/neon-js.git#652dec7e7509bc4ae7094f3f759757acda006ed4"
+  resolved "https://github.com/aphtoken/neon-js#652dec7e7509bc4ae7094f3f759757acda006ed4"
   dependencies:
     axios "^0.16.2"
     base-x "^3.0.2"
