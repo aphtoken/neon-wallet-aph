@@ -95,6 +95,7 @@ export const refreshData = ( net, address, hash, dispatch ) => {
     }
     console.log('response when getting info for hash', hash, data);
   }).catch((e) => {
+    dispatch(addHashData(hash, {symbol: '', name: '', decimals: 0, totalSupply: 0}));
     console.log('error when getting info for hash', hash, e);
     return false;
   });

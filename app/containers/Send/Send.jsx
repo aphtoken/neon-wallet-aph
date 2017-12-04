@@ -51,7 +51,7 @@ export default class Send extends Component<Props, State> {
     let currentIndex = nep5.findIndex( hash => hash === selectedHash );
     let nextHash = nep5[currentIndex + 1];
     let nextSymbol = tokens[nextHash] ? tokens[nextHash].symbol : undefined;
-    if( selectedHash &&  nextHash ){
+    if( selectedHash &&  nextHash && selectedAsset !== ASSETS_LABELS.NEO){
       newAsset = nextHash;
     }else if(selectedAsset === ASSETS_LABELS.NEO){
       newAsset = ASSETS_LABELS.GAS;
@@ -62,7 +62,7 @@ export default class Send extends Component<Props, State> {
     if(newAsset === ASSETS_LABELS.NEO){
       nextSymbol = ASSETS_LABELS.NEO;
     }
-    toggleAsset(nextSymbol? nextSymbol : (currentIndex + 2)+'°', newAsset); //add +2 since humans count from 1
+    toggleAsset(nextSymbol ? nextSymbol : (currentIndex + 2)+'°', newAsset); //add +2 since humans count from 1
   }
 
   // perform send transaction
