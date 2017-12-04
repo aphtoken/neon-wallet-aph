@@ -50,14 +50,14 @@ export default class Send extends Component<Props, State> {
     let newAsset = ASSETS_LABELS.NEO;
     let currentIndex = nep5.findIndex( hash => hash === selectedHash );
     let nextHash = nep5[currentIndex + 1];
-    let nextSymbol = symbols[nextHash]
+    let nextSymbol = symbols[nextHash] ? symbols[nextHash].symbol : undefined;
     if( selectedHash &&  nextHash ){
       newAsset = nextHash;
     }else if(selectedAsset === ASSETS_LABELS.NEO){
       newAsset = ASSETS_LABELS.GAS;
       nextSymbol = ASSETS_LABELS.GAS;
     }else if(selectedAsset === ASSETS_LABELS.GAS && Object.keys(symbols).length > 0){
-      newAsset = symbols[ Object.keys(symbols)[0] ]
+      newAsset = symbols[ Object.keys(symbols)[0] ].symbol
     }
     if(newAsset === ASSETS_LABELS.NEO){
       nextSymbol = ASSETS_LABELS.NEO;
