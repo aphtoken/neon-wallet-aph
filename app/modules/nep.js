@@ -62,14 +62,7 @@ export function addHashData(hashscript, data){
 export const initiateGetAssetsBalance = (net: NetworkType, address: string, nep5: string[]) => async (dispatch: DispatchType) => {
   nep5.map((hash, index) => {
     refreshAssetBalance(net, address, hash, dispatch);
-    getTokenInfo(net, hash.slice(2)).then((name, symbol, decimals, totalSupply) => {
-      dispatch(addHashData(hash, symbol));
-      console.log('response when getting info for hash', hash, symbol);
-    }).catch((e) => {
-      console.log('error when getting info for hash', hash, e);
-      dispatch(addHashData(hash, {}));
-      return false;
-    });
+    refreshData(net, address, hash, dispatch);
   });
 }
 
@@ -91,6 +84,17 @@ export const refreshAssetBalance = ( net, address, hashscript, dispatch ) => {
     dispatch(addHashBalance(hashscript, balance));
   }).catch((e) => {
     dispatch(addHashBalance(hashscript, 0));
+    return false;
+  });
+}
+
+export const refreshData = ( net, address, hash, dispatch ) => {
+  getTokenInfo(net, hash.slice(2)).then((data) => {
+    dispatch(addHashData(hash, data));
+    console.log('response when getting info for hash', hash, data);
+  }).catch((e) => {
+    console.log('error when getting info for hash', hash, e);
+    dispatch(addHashData(hash, {}));
     return false;
   });
 }
