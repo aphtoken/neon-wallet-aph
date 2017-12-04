@@ -12,7 +12,7 @@ export let intervals = {}
 type Props = {
   nep5: string[],
   balances: Object,
-  symbols: Object,
+  tokens: Object,
   net: NetworkType,
   address: string,
   initiateGetAssetsBalance: Function,
@@ -61,7 +61,7 @@ export default class Assets extends Component<Props> {
   }
 
   render () {
-    const {symbols, addNepToStore, removeNepFromStore} = this.props
+    const {tokens, addNepToStore, removeNepFromStore} = this.props
     return (
       <div>
         <div className={styles.assetsContainer}>
@@ -74,7 +74,7 @@ export default class Assets extends Component<Props> {
               let balance = this.props.balances[hash];
               return (
                 <li key={hash}>
-                  <div className={styles.amountBig}>{ symbols[hash] ? symbols[hash] + ' ' : '' }{ balance }</div>
+                  <div className={styles.amountBig}>{ tokens[hash] && tokens[hash].symbol ? tokens[hash].symbol + ' ' : '' }{ balance }</div>
                   <div>
                     <span><strong>Hash:</strong> { hash }</span>
                     <span id={'delete_' + hash} className={styles.delete} data-tip data-for={'deleteHash_' + index} onClick={(e) => removeNepFromStore( hash, index )}>X</span>

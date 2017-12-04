@@ -11,7 +11,7 @@ import { addNepToStore, setNepToStore, initiateGetAssetsBalance, removeNepFromSt
 const mapStateToProps = (state) => ({
   nep5: state.nep.nep5,
   balances: state.nep.balances,
-  symbols: state.nep.symbols,
+  tokens: state.nep.tokens,
   net: state.metadata.network,
   address: state.account.address
 });

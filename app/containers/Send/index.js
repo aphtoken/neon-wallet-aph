@@ -6,7 +6,7 @@ import { sendTransaction, toggleAsset, getSelectedAsset, getSelectedHash } from 
 import { showErrorNotification } from '../../modules/notifications'
 import { togglePane, getConfirmPane } from '../../modules/dashboard'
 import { getNeo, getGas } from '../../modules/wallet'
-import { getBalances, getSymbols, getNep5 } from '../../modules/nep'
+import { getBalances, getTokens, getNep5 } from '../../modules/nep'
 
 
 const mapStateToProps = (state) => ({
@@ -16,7 +16,7 @@ const mapStateToProps = (state) => ({
   selectedHash: getSelectedHash(state),
   confirmPane: getConfirmPane(state),
   nep5: getNep5(state),
-  symbols: getSymbols(state),
+  tokens: getTokens(state),
   balances: getBalances(state)
 })
 
