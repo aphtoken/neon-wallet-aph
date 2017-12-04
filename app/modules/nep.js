@@ -13,10 +13,7 @@ export const ADD_HASH_DATA = 'ADD_HASH_DATA';
 
 //start with aphelion on your nep5 contracts
 let initialNep5ReducerState = ['0xa0777c3ce2b169d4a23bcba4565e3225a0122d95', '0xecc6b20d3ccac1ee9ef109af5a7cdb85706b1df9'];
-let initialNep5Symbols = {
-  '0xa0777c3ce2b169d4a23bcba4565e3225a0122d95': {symbol:'APH'},
-  '0xecc6b20d3ccac1ee9ef109af5a7cdb85706b1df9': {symbol:'RPX'}
-}
+let initialNep5Symbols = {}
 
 // Actions
 export function setNep5(nep5){
@@ -89,13 +86,13 @@ export const refreshAssetBalance = ( net, address, hashscript, dispatch ) => {
 }
 
 export const refreshData = ( net, address, hash, dispatch ) => {
+
   getTokenInfo(net, hash.slice(2)).then((data) => {
     if(data != undefined && data != null){
       dispatch(addHashData(hash, data));
     }
     console.log('response when getting info for hash', hash, data);
   }).catch((e) => {
-    dispatch(addHashData(hash, {symbol: '', name: '', decimals: 0, totalSupply: 0}));
     console.log('error when getting info for hash', hash, e);
     return false;
   });
