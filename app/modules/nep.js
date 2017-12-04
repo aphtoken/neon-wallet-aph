@@ -90,7 +90,9 @@ export const refreshAssetBalance = ( net, address, hashscript, dispatch ) => {
 
 export const refreshData = ( net, address, hash, dispatch ) => {
   getTokenInfo(net, hash.slice(2)).then((data) => {
-    dispatch(addHashData(hash, data));
+    if(data != undefined && data != null){
+      dispatch(addHashData(hash, data));
+    }
     console.log('response when getting info for hash', hash, data);
   }).catch((e) => {
     console.log('error when getting info for hash', hash, e);
@@ -120,7 +122,7 @@ export default (state = { nep5: initialNep5ReducerState , balances: {}, symbols:
             let balanceState = Object.assign({}, state, { balances: { ...state.balances, ...action.payload }});
             return balanceState;
         case ADD_HASH_DATA:
-            let dataState = Object.assign({}, state, { data: { ...state.data, ...action.payload }});
+            let dataState = Object.assign({}, state, { symbols: { ...state.symbols, ...action.payload }});
             return dataState;
         default:
             return state;

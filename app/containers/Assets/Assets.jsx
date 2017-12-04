@@ -74,7 +74,7 @@ export default class Assets extends Component<Props> {
               let balance = this.props.balances[hash];
               return (
                 <li key={hash}>
-                  <div className={styles.amountBig}>{ symbols[hash] ? symbols[hash].symbol + ' ' : '' }{ balance }</div>
+                  <div className={styles.amountBig}>{ symbols[hash] && symbols[hash].symbol ? symbols[hash].symbol + ' ' : '' }{ balance }</div>
                   <div>
                     <span><strong>Hash:</strong> { hash }</span>
                     <span id={'delete_' + hash} className={styles.delete} data-tip data-for={'deleteHash_' + index} onClick={(e) => removeNepFromStore( hash, index )}>X</span>
