@@ -13,7 +13,7 @@ type Props = {
   neo: number,
   gas: number,
   nep5: string[],
-  symbols: Object[],
+  tokens: Object[],
   balances: Object[],
   confirmPane: boolean,
   selectedAsset: string,
@@ -46,18 +46,18 @@ export default class Send extends Component<Props, State> {
   }
 
   nextAsset = () => {
-    const { selectedAsset, selectedHash, nep5, symbols, toggleAsset } = this.props
+    const { selectedAsset, selectedHash, nep5, tokens, toggleAsset } = this.props
     let newAsset = ASSETS_LABELS.NEO;
     let currentIndex = nep5.findIndex( hash => hash === selectedHash );
     let nextHash = nep5[currentIndex + 1];
-    let nextSymbol = symbols[nextHash] ? symbols[nextHash].symbol : undefined;
+    let nextSymbol = tokens[nextHash] ? tokens[nextHash].symbol : undefined;
     if( selectedHash &&  nextHash ){
       newAsset = nextHash;
     }else if(selectedAsset === ASSETS_LABELS.NEO){
       newAsset = ASSETS_LABELS.GAS;
       nextSymbol = ASSETS_LABELS.GAS;
-    }else if(selectedAsset === ASSETS_LABELS.GAS && Object.keys(symbols).length > 0){
-      newAsset = symbols[ Object.keys(symbols)[0] ].symbol
+    }else if(selectedAsset === ASSETS_LABELS.GAS && Object.keys(tokens).length > 0){
+      newAsset = tokens[ Object.keys(tokens)[0] ].symbol
     }
     if(newAsset === ASSETS_LABELS.NEO){
       nextSymbol = ASSETS_LABELS.NEO;
