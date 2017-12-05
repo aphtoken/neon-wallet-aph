@@ -13,7 +13,7 @@ import asyncWrap from '../core/asyncHelper'
 import { buildScript } from '../sc/scriptBuilder'
 import { reverseHex } from 'neon-js/src/utils'
 import { doInvokeScript } from 'neon-js/src/api'
-import { getScriptHashFromAddress } from 'neon-js/src/wallet'
+import { getScriptHashFromAddress, getAccountFromWIFKey } from 'neon-js/src/wallet'
 import { invocationTx } from 'neon-js/src/transactions/create'
 import { signTransaction } from 'neon-js/src/transactions/index'
 import { Query } from '../core/query'
@@ -64,17 +64,28 @@ export const sendTransaction = (sendAddress: string, sendAmount: string) => asyn
   const selectedHash = getSelectedHash(state)
   const balances = state.nep.balances
   const signingFunction = getSigningFunction(state)
-  const publicKey = getPublicKey(state)
+  const account = getAccountFromWIFKey(wif)
+  const publicKey = account.publicKeyEncoded
+  const privateKey = account.privateKey
+  const tokens = state.nep.tokens
 
   const rejectTransaction = (message: string) => dispatch(showErrorNotification({ message }))
   const { error, valid } = validateTransactionBeforeSending(neo, gas, selectedAsset, selectedHash, balances, sendAddress, sendAmount)
 
   if (valid) {
     if(selectedHash){
+
+      let parsedValue = Math.round(sendAmount * Math.pow(10, tokens[selectedHash].decimals))
+
       //run this logic for nep5 contracts
-      doTransferToken(net, selectedHash.slice(2), wif, publicKey, address, sendAddress, sendAmount, 0, signingFunction)
+      doTransferToken(net, selectedHash.slice(2), wif, publicKey, privateKey, address, sendAddress, parsedValue, 0, signingFunction)
         .then((result) => {
           console.log('the result from trying to transfer was', result);
+          if(result.result){
+            return dispatch(showSuccessNotification({ message: 'The transaction was successful. Wait until the transfer is approved to see it on the balance.' }))
+          }else{
+            return rejectTransaction('Transaction failed!')
+          }
       })
 
     }else{
@@ -122,8 +133,7 @@ export const sendTransaction = (sendAddress: string, sendAmount: string) => asyn
  * @param {function} signingFunction
  * @return {Promise<Response>} RPC response
  */
-const doTransferToken = (net, scriptHash, wif, publickey, fromAddress, toAddress, transferAmount, gasCost = 0, signingFunction = null) => {
-
+const doTransferToken = (net, scriptHash, wif, publickey, privatekey, fromAddress, toAddress, transferAmount, gasCost = 0, signingFunction = null) => {
   const rpcEndpointPromise = getRPCEndpoint(net)
   const balancePromise = getBalance(net, fromAddress)
   let signedTx
@@ -142,7 +152,7 @@ const doTransferToken = (net, scriptHash, wif, publickey, fromAddress, toAddress
       if (signingFunction) {
         return signingFunction(unsignedTx, publickey)
       } else {
-        return signTransaction(unsignedTx, wif)
+        return signTransaction(unsignedTx, privatekey)
       }
     })
     .then((signedResult) => {
