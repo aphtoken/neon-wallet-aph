@@ -1,10 +1,10 @@
 {
-  "name": "Neon",
-  "version": "0.0.7",
+  "name": "Aphelion Neon Wallet",
+  "version": "0.0.9",
   "main": "./main.js",
   "description": "Light wallet for NEO blockchain",
-  "homepage": "https://github.com/CityOfZion/neon-wallet",
-  "author": "Ethan Fast <ejhfast@gmail.com> (https://github.com/Ejhfast)",
+  "homepage": "https://github.com/aphtoken/neon-wallet-aph",
+  "author": "Aphelion <support@aphelion.org> (https://github.com/aphtoken/neon-wallet-aph)",
   "scripts": {
     "postinstall": "electron-builder install-app-deps && electron-rebuild --force --module_dir . -w node-hid -v 1.7.9",
     "start": "cross-env NODE_ENV=production electron .",
