@@ -60,6 +60,10 @@ export default class Assets extends Component<Props> {
     hashToAdd.value = '';
   }
 
+  isRpxOrAph(hash){
+    return hash == '0xa0777c3ce2b169d4a23bcba4565e3225a0122d95' || hash == '0xecc6b20d3ccac1ee9ef109af5a7cdb85706b1df9'
+  }
+
   render () {
     const {tokens, addNepToStore, removeNepFromStore} = this.props
     return (
@@ -75,13 +79,15 @@ export default class Assets extends Component<Props> {
               return (
                 <li key={hash}>
                   <div className={styles.amountBig}>{ tokens[hash] && tokens[hash].symbol ? tokens[hash].symbol + ' ' : '' }{ balance }</div>
-                  <div>
-                    <span><strong>Hash:</strong> { hash }</span>
-                    <span id={'delete_' + hash} className={styles.delete} data-tip data-for={'deleteHash_' + index} onClick={(e) => removeNepFromStore( hash, index )}>X</span>
-                    <ReactTooltip class='solidTip' id={'deleteHash_' + index} place='bottom' type='dark' effect='solid'>
-                      <span>Remove Hash</span>
-                    </ReactTooltip>
-                  </div>
+                  {!this.isRpxOrAph(hash) ? (
+                      <div >
+                        <span><strong>Hash:</strong> { hash }</span>
+                        <span id={'delete_' + hash} className={styles.delete} data-tip data-for={'deleteHash_' + index} onClick={(e) => removeNepFromStore( hash, index )}>X</span>
+                        <ReactTooltip class='solidTip' id={'deleteHash_' + index} place='bottom' type='dark' effect='solid'>
+                          <span>Remove Hash</span>
+                        </ReactTooltip>
+                      </div>
+                  ):('')}
                 </li>);
             })}
           </ul>
