@@ -80,7 +80,7 @@ export const sendTransaction = (sendAddress: string, sendAmount: string) => asyn
       //run this logic for nep5 contracts
       doTransferToken(net, selectedHash.slice(2), wif, publicKey, privateKey, address, sendAddress, parsedValue, 0, signingFunction)
         .then((result) => {
-          console.log('the result from trying to transfer was', result);
+
           if(result.result){
             return dispatch(showSuccessNotification({ message: 'The transaction was successful. Wait until the transfer is approved to see it on the balance.' }))
           }else{
@@ -89,6 +89,7 @@ export const sendTransaction = (sendAddress: string, sendAmount: string) => asyn
       })
 
     }else{
+
       const selfAddress = address
       const assetName = selectedAsset === ASSETS_LABELS.NEO ? ASSETS.NEO : ASSETS.GAS
       let sendAsset = {}
@@ -97,7 +98,7 @@ export const sendTransaction = (sendAddress: string, sendAmount: string) => asyn
       dispatch(showInfoNotification({ message: 'Sending Transaction...', autoDismiss: 0 }))
       log(net, 'SEND', selfAddress, { to: sendAddress, asset: selectedAsset, amount: sendAmount })
 
-      const isHardwareSend = !!publicKey
+      const isHardwareSend = !publicKey
 
       let sendAssetFn
       if (isHardwareSend) {
